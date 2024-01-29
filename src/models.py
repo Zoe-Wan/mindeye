@@ -29,7 +29,7 @@ class Clipper(torch.nn.Module):
         
         if clip_variant=="ViT-L/14" and hidden_state:
             from transformers import CLIPVisionModelWithProjection
-            image_encoder = CLIPVisionModelWithProjection.from_pretrained("openai/clip-vit-large-patch14").eval()
+            image_encoder = CLIPVisionModelWithProjection.from_pretrained("openai/clip-vit-large-patch14",cache_dir="/root/autodl-tmp/clip").eval()
             # image_encoder = CLIPVisionModelWithProjection.from_pretrained("openai/clip-vit-large-patch14",cache_dir="/fsx/proj-medarc/fmri/cache")
             #from transformers import CLIPVisionModelWithProjection
             #sd_cache_dir = '/fsx/proj-medarc/fmri/cache/models--shi-labs--versatile-diffusion/snapshots/2926f8e11ea526b562cd592b099fcf9c2985d0b7'
@@ -41,7 +41,7 @@ class Clipper(torch.nn.Module):
         elif hidden_state:
             raise Exception("hidden_state embeddings only works with ViT-L/14 right now")
         
-        clip_model, preprocess = clip.load(clip_variant, device=device)
+        clip_model, preprocess = clip.load(clip_variant, device=device, download_root='/root/autodl-tmp/clip')
         clip_model.eval() # dont want to train model
         for param in clip_model.parameters():
             param.requires_grad = False # dont need to calculate gradients

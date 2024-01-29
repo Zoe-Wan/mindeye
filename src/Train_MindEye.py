@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[2]:
 
 
 # # Code to convert this notebook to .py if you want to run it via command line or with Slurm
@@ -16,6 +16,7 @@
 
 
 import os
+os.environ['WANDB_BASE_URL'] = 'https://api.wandb.ai'
 import sys
 import json
 import argparse
@@ -57,10 +58,10 @@ print("distributed =",distributed, "num_devices =", num_devices, "local rank =",
 # if running this interactively, can specify jupyter_args here for argparser to use
 if utils.is_interactive():
     # Example use
-    jupyter_args = "--data_path=/fsx/proj-medarc/fmri/natural-scenes-dataset \
-                    --model_name=test \
-                    --subj=1 --hidden --clip_variant=ViT-L/14 --batch_size=32 --n_samples_save=0 \
-                    --max_lr=3e-4 --mixup_pct=.33 --num_epochs=240 --ckpt_interval=5 --use_image_aug"
+    jupyter_args = "--data_path=/root/autodl-tmp/NSD \
+                    --model_name=baseline \
+                    --subj=1 --hidden --clip_variant=ViT-L/14 --batch_size=32 --n_samples_save=0 --wandb_log\
+                    --max_lr=3e-4 --mixup_pct=.33 --num_epochs=240 --ckpt_interval=10 --use_image_aug"
     
     jupyter_args = jupyter_args.split()
     print(jupyter_args)
@@ -195,7 +196,7 @@ num_epochs *= accelerator.num_processes
 # In[5]:
 
 
-outdir = os.path.abspath(f'../train_logs/{model_name}')
+outdir = f'/root/autodl-tmp/fMRI/train_logs/{model_name}'
 if not os.path.exists(outdir):
     os.makedirs(outdir,exist_ok=True)
 if use_image_aug:
@@ -218,10 +219,10 @@ if use_image_aug:
 
 print('Pulling NSD webdataset data...')
 
-train_url = "{" + f"{data_path}/webdataset_avg_split/train/train_subj0{subj}_" + "{0..17}.tar," + f"{data_path}/webdataset_avg_split/val/val_subj0{subj}_0.tar" + "}"
-val_url = f"{data_path}/webdataset_avg_split/test/test_subj0{subj}_" + "{0..1}.tar"
+train_url = "{" + f"{data_path}/train/train_subj0{subj}_" + "{0..17}.tar," + f"{data_path}/val/val_subj0{subj}_0.tar" + "}"
+val_url = f"{data_path}/test/test_subj0{subj}_" + "{0..1}.tar"
 print(train_url,"\n",val_url)
-meta_url = f"{data_path}/webdataset_avg_split/metadata_subj0{subj}.json"
+meta_url = f"{data_path}/metadata_subj0{subj}.json"
 num_train = 8559 + 300
 num_val = 982
 
@@ -245,7 +246,13 @@ train_dl, val_dl, num_train, num_val = utils.get_dataloaders(
 )
 
 
-# In[7]:
+# In[ ]:
+
+
+for train_dl
+
+
+# In[6]:
 
 
 print('Creating Clipper...')
@@ -453,7 +460,7 @@ print("\nDone with model preparations!")
 
 # # Weights and Biases
 
-# In[8]:
+# In[7]:
 
 
 # params for wandb
@@ -562,7 +569,7 @@ diffusion_prior, optimizer, train_dl, val_dl, lr_scheduler
 )
 
 
-# In[11]:
+# In[ ]:
 
 
 print(f"{model_name} starting with epoch {epoch} / {num_epochs}")
@@ -817,4 +824,10 @@ for epoch in progress_bar:
 print("\n===Finished!===\n")
 if not utils.is_interactive():
     sys.exit(0)
+
+
+# In[ ]:
+
+
+
 

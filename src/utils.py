@@ -198,9 +198,9 @@ def image_grid(imgs, rows, cols):
 
 def get_huggingface_urls(commit='main',subj=1):
     base_url = "https://huggingface.co/datasets/pscotti/naturalscenesdataset/resolve/"
-    train_url = base_url + commit + f"/webdataset_avg_split/train/train_subj0{subj}_" + "{0..17}.tar"
-    val_url = base_url + commit + f"/webdataset_avg_split/val/val_subj0{subj}_0.tar"
-    test_url = base_url + commit + f"/webdataset_avg_split/test/test_subj0{subj}_" + "{0..1}.tar"
+    train_url = base_url + commit + f"/train/train_subj0{subj}_" + "{0..17}.tar"
+    val_url = base_url + commit + f"/val/val_subj0{subj}_0.tar"
+    test_url = base_url + commit + f"/test/test_subj0{subj}_" + "{0..1}.tar"
     return train_url, val_url, test_url
     
 def check_loss(loss):
@@ -762,3 +762,4 @@ def voxel_select(voxels):
     # random select
     randints = torch.randint(0, voxels.shape[1], (voxels.shape[0],))
     return voxels[torch.arange(voxels.shape[0]), randints]
+
