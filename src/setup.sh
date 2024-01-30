@@ -1,7 +1,7 @@
 #!/bin/bash
 # Commands to setup a new conda environment and install all the necessary packages
 # See the environment.yaml file for "conda env export > environment.yaml" after running this.
-
+source activate
 set -e
 
 conda create -n mindeye python=3.10.8 -y
@@ -19,3 +19,4 @@ pip install diffusers==0.13.0
 
 pip install info-nce-pytorch==0.1.0
 pip install pytorch-msssim
+python -m ipykernel install --user --name mindeye
